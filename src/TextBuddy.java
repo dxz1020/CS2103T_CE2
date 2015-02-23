@@ -105,28 +105,28 @@ public class TextBuddy {
 	private static void executeCommand(String command, String input) {
 		switch (command) {
 		case "add" :
-			command_ADD(input);
+			addToFile(input);
 			break;
 		case "display" :
-			command_Display();
+			displayFileContent();
 			return; 
 		case "delete" :
-			command_Delete(input);
+			deleteTask(input);
 			break;
 		case "clear" :
-			command_Clear();
+			clearAllTask();
 			break;
 		case "exit" :
 			exit();
 			break;
 		default :
-			throw new Error(); 
+			throw new Error("INVALID"); 
 		}
 
 		save();
 	}
 
-	private static void command_ADD(String input) {
+	private static void addToFile(String input) {
 		if (input == null) {
 			return;
 		}
@@ -134,7 +134,7 @@ public class TextBuddy {
 		printMessage(MESSAGE_ADD, file.getName(), input);
 	}
 
-	private static void command_Display() {
+	private static void displayFileContent() {
 		if (data.isEmpty()) {
 			printMessage(MESSAGE_EMPTY_FILE, file.getName());
 		}
@@ -143,7 +143,7 @@ public class TextBuddy {
 		}
 	}
 
-	private static void command_Delete(String input) {
+	private static void deleteTask(String input) {
 		if (data.isEmpty()) {
 			printMessage(MESSAGE_EMPTY_FILE, file.getName());
 			return;
@@ -152,7 +152,7 @@ public class TextBuddy {
 		deleteContentAtIndex(index);
 	}
 
-	private static void command_Clear() {
+	private static void clearAllTask() {
 		data.clear();
 		printMessage(MESSAGE_CLEAR, file.getName());
 	}
