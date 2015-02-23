@@ -49,6 +49,7 @@ public class TextBuddy {
 		acceptUserCommandsUntilExit();
 	}
 	
+	//Requires filename defines by user to function, this method will check for missing arguments
 	private static void verifyArgument(String[] args) {
 		if (args.length == 0) {
 			printMessage(MESSAGE_MISSING_ARGUMENTS, "MISSING ARGUMENTS");
