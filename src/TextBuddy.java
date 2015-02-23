@@ -14,11 +14,11 @@ import java.util.Scanner;
  * TextBuddy version 2: added sort and search functions
  * 
  * TextBuddy is a text-based CMD style TODO app that supports:
- * 1) Adding a new task
- * 2) Deleting a task
- * 3) Displaying a task
- * 4) Sorting of tasks
- * 5) Searching tasks
+ * 1) Adding a new task : add <task>
+ * 2) Deleting a task : delete <task number>
+ * 3) Displaying a task : display
+ * 4) Sorting of tasks : sort
+ * 5) Searching tasks : search <text>
  * 
  * @author Duan Xu Zhou A0108453J
  *
@@ -46,7 +46,7 @@ public class TextBuddy {
 		verifyArgument(args);
 		createNewFile(args[0]);
 		showWelcomeMessage();
-		scanCommandUntilExit();
+		acceptUserCommandsUntilExit();
 	}
 	
 	private static void verifyArgument(String[] args) {
@@ -57,7 +57,7 @@ public class TextBuddy {
 	}
 
 	private static void createNewFile(String filename) {
-		createConstruct(filename);
+		createIOConstruct(filename);
 		readFromFile(file);
 	}
 	
@@ -65,13 +65,13 @@ public class TextBuddy {
 		printMessage(MESSAGE_WELCOME, file.getName());
 	}
 	
-	private static void scanCommandUntilExit() {
+	private static void acceptUserCommandsUntilExit() {
 		while (isNotExit) {
-			acceptUserInput();
+			scanForUserInput();
 		}
 	}
 	
-	private static void createConstruct(String filename) {
+	private static void createIOConstruct(String filename) {
 		data = new ArrayList<String>();
 		file = new File(filename);
 		inputScanner = new Scanner(System.in);
@@ -79,19 +79,19 @@ public class TextBuddy {
 	
 	private static void readFromFile(File file) {
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+			BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 			String temp;
-			while ((temp = br.readLine()) != null) {
+			while ((temp = fileReader.readLine()) != null) {
 				data.add(temp);
 			}
-			br.close();
+			fileReader.close();
 		}catch (IOException e) {
 		}
 	}
 
-	private static void acceptUserInput(){
+	private static void scanForUserInput(){
 		String input;
-		String userInput = null;
+		String userInput = null; //for the case of display and sort commands, no user input field is given
 		displayPrompt();
 		input = inputScanner.nextLine().trim();
 		String[] tokenizer = input.split(" ",2);
@@ -117,13 +117,13 @@ public class TextBuddy {
 			clearAllTask();
 			break;
 		case "exit" :
-			exit();
+			exitProgram();
 			break;
 		default :
-			throw new Error("INVALID"); 
+			throw new Error(); 
 		}
 
-		save();
+		saveFile();
 	}
 
 	private static void addToFile(String input) {
@@ -157,14 +157,14 @@ public class TextBuddy {
 		printMessage(MESSAGE_CLEAR, file.getName());
 	}
 
-	private static void exit() {
+	private static void exitProgram() {
 		inputScanner.close();
 		isNotExit = false;
 	}
 
 	private static int getIndex(String input) {
 		try {
-			return Integer.parseInt(input) - 1;
+			return Integer.parseInt(input) - 1; //index starts from 1
 		} catch (NumberFormatException e) {
 		}
 		return INDEX_OUT_OF_BOUND;
@@ -183,15 +183,15 @@ public class TextBuddy {
 
 	}
 
-	private static void save() {
+	private static void saveFile() {
 		try {
-			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+			BufferedWriter fileWriter = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(file)));
 			for (String element : data) {
-				bw.write(element);
-				bw.newLine();
+				fileWriter.write(element);
+				fileWriter.newLine();
 			}
-			bw.close();
+			fileWriter.close();
 		}catch (IOException e) {
 		}
 	}
