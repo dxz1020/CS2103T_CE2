@@ -53,7 +53,7 @@ public class TextBuddy {
 	//return error if no filename is specified
 	private static void verifyArgument(String[] args) {
 		if (args.length == 0) {
-			printMessage(MESSAGE_MISSING_ARGUMENTS, "MISSING ARGUMENTS");
+			displayMessage(formatMessage(MESSAGE_MISSING_ARGUMENTS, "MISSING ARGUMENTS"));
 			System.exit(0);
 		}
 	}
@@ -64,12 +64,13 @@ public class TextBuddy {
 	}
 	
 	private static void showWelcomeMessage() {
-		printMessage(MESSAGE_WELCOME, file.getName());
+		displayMessage(formatMessage(MESSAGE_WELCOME, file.getName()));
 	}
 	
 	private static void acceptUserCommandsUntilExit() {
 		while (isNotExit) {
-			scanForUserInput();
+			String userInput=scanForUserInput();
+			executeCommand(userInput);
 		}
 	}
 	
@@ -91,29 +92,30 @@ public class TextBuddy {
 		}
 	}
 
-	private static void scanForUserInput(){
-		String input;
-		String userInput = null; //for the case of display and sort commands, no user input field is given
-		displayPrompt();
-		input = inputScanner.nextLine().trim();
-		String[] tokenizer = input.split(" ",2);
-		String userCommand=tokenizer[0];
-		if(tokenizer.length>1){
-			userInput=tokenizer[1];
-		}
-		executeCommand(userCommand,userInput);
+	private static String scanForUserInput(){
+		displayMessage(MESSAGE_COMMAND);
+		String userInput = inputScanner.nextLine().trim();
+		return userInput;
 	}
 
-	private static void executeCommand(String command, String input) {
-		switch (command) {
+	public static void executeCommand(String input) {
+		String userDataInput = null; //for the case of <display> and <sort> commands, no user data input field is given
+		String[] tokenizer = input.split(" ",2);
+		String userCommand=tokenizer[0];
+		
+		if(tokenizer.length>1){
+			userDataInput=tokenizer[1];
+		}
+		
+		switch (userCommand) {
 		case "add" :
-			addToFile(input);
+			addToFile(userDataInput);
 			break;
 		case "display" :
 			displayFileContent();
 			return; 
 		case "delete" :
-			deleteTask(input);
+			deleteTask(userDataInput);
 			break;
 		case "clear" :
 			clearAllTask();
@@ -133,21 +135,21 @@ public class TextBuddy {
 			return;
 		}
 		data.add(input);
-		printMessage(MESSAGE_ADD, file.getName(), input);
+		formatMessage(MESSAGE_ADD, file.getName(), input);
 	}
 
 	private static void displayFileContent() {
 		if (data.isEmpty()) {
-			printMessage(MESSAGE_EMPTY_FILE, file.getName());
+			formatMessage(MESSAGE_EMPTY_FILE, file.getName());
 		}
 		for (int i = 0; i < data.size(); i++) {
-			printMessage(MESSAGE_DISPLAY, i + 1, data.get(i));
+			formatMessage(MESSAGE_DISPLAY, i + 1, data.get(i));
 		}
 	}
 
 	private static void deleteTask(String input) {
 		if (data.isEmpty()) {
-			printMessage(MESSAGE_EMPTY_FILE, file.getName());
+			formatMessage(MESSAGE_EMPTY_FILE, file.getName());
 			return;
 		}
 		int index = getIndex(input);
@@ -156,7 +158,7 @@ public class TextBuddy {
 
 	private static void clearAllTask() {
 		data.clear();
-		printMessage(MESSAGE_CLEAR, file.getName());
+		formatMessage(MESSAGE_CLEAR, file.getName());
 	}
 
 	private static void exitProgram() {
@@ -179,7 +181,7 @@ public class TextBuddy {
 		try {
 			String content = data.get(index);
 			data.remove(index);
-			printMessage(MESSAGE_DELETE, file.getName(), content);
+			formatMessage(MESSAGE_DELETE, file.getName(), content);
 		} catch (IndexOutOfBoundsException e) {
 		}
 
@@ -198,11 +200,11 @@ public class TextBuddy {
 		}
 	}
 
-	private static void displayPrompt() {
-		printMessage(MESSAGE_COMMAND);
+	private static void displayMessage(String message) {
+		System.out.println(message);
 	}
 
-	private static void printMessage(String message, Object... args) {
-		System.out.println(String.format(message, args));
+	private static String formatMessage(String message, Object... args) {
+		return String.format(message, args);
 	}
 }
