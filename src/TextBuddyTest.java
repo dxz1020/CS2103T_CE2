@@ -17,6 +17,12 @@ public class TextBuddyTest {
 		assertEquals("all content deleted from mytestfile.txt",TextBuddy.executeCommand("clear"));
 		assertEquals(0,TextBuddy.getFileSize());
 	}
+	
+	@Test
+	public void testDisplay(){
+		TextBuddy.executeCommand("clear");
+		assertEquals("mytestfile.txt is empty",TextBuddy.executeCommand("display"));
+	}
 	@Test
 	public void testAdd(){
 		TextBuddy.executeCommand("clear");
