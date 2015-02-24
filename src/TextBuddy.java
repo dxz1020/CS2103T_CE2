@@ -136,7 +136,7 @@ public class TextBuddy {
 		if(data.isEmpty()){
 			return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
 		}
-		Collections.sort(data);
+		Collections.sort(data,String.CASE_INSENSITIVE_ORDER);
 		return MESSAGE_SORT;
 	}
 
