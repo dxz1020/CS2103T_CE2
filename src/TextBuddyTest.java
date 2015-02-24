@@ -106,6 +106,14 @@ public class TextBuddyTest {
 		TextBuddy.executeCommand("add peach");
 		assertEquals("1. apple\n",TextBuddy.executeCommand("search apple"));
 		assertEquals("2. peach\n",TextBuddy.executeCommand("search peach"));
+		
+		TextBuddy.executeCommand("clear");
+		TextBuddy.executeCommand("add thomas");
+		TextBuddy.executeCommand("add computer");
+		TextBuddy.executeCommand("add NUS");
+		TextBuddy.executeCommand("add computer science");
+		TextBuddy.executeCommand("add comp123");
+		assertEquals("2. computer\n4. computer science\n5. comp123\n", TextBuddy.executeCommand("search comp"));
 	}
 
 }
