@@ -22,11 +22,11 @@ public class TextBuddyTest {
 	@Test
 	public void testAdd(){
 		String output=null;
-		
 		TextBuddy.executeCommand("clear");
 		TextBuddy.executeCommand("add 123");
 		output=TextBuddy.executeCommand("display");
 		assertEquals("1. 123",output);
+		assertEquals(1,TextBuddy.getFileSize());
 	}
 
 }
