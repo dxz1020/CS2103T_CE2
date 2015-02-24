@@ -26,7 +26,7 @@ public class TextBuddyTest {
 	@Test
 	public void testAdd(){
 		TextBuddy.executeCommand("clear");
-		TextBuddy.executeCommand("add 123");
+		assertEquals("added to mytestfile.txt: \"123\"",TextBuddy.executeCommand("add 123"));
 		assertEquals("1. 123",TextBuddy.executeCommand("display"));
 		assertEquals(1,TextBuddy.getFileSize());
 	}
