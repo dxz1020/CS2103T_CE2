@@ -17,6 +17,7 @@ public class TextBuddyTest {
 		String output=null;
 		output=TextBuddy.executeCommand("clear");
 		assertEquals("all content deleted from mytestfile.txt",output);
+		assertEquals(0,TextBuddy.getFileSize());
 	}
 	@Test
 	public void testAdd(){
