@@ -60,6 +60,9 @@ public class TextBuddyTest {
 		//null test
 		TextBuddy.executeCommand("clear");
 		assertEquals("mytestfile.txt is empty",TextBuddy.executeCommand("sort"));
+		assertEquals("mytestfile.txt is empty",TextBuddy.executeCommand("display"));
+		assertEquals(0, TextBuddy.getFileSize());
+		
 	}
 
 }
