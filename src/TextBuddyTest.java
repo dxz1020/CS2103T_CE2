@@ -20,8 +20,13 @@ public class TextBuddyTest {
 	
 	@Test
 	public void testDisplay(){
+		//null test case
 		TextBuddy.executeCommand("clear");
 		assertEquals("mytestfile.txt is empty",TextBuddy.executeCommand("display"));
+		
+		TextBuddy.executeCommand("add fairytale");
+		TextBuddy.executeCommand("add peter pan");
+		assertEquals("1. fairytale\n2. peter pan",TextBuddy.executeCommand("display"));
 	}
 	@Test
 	public void testAdd(){
