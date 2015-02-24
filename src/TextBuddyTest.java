@@ -14,18 +14,14 @@ public class TextBuddyTest {
 	
 	@Test
 	public void testClear(){
-		String output=null;
-		output=TextBuddy.executeCommand("clear");
-		assertEquals("all content deleted from mytestfile.txt",output);
+		assertEquals("all content deleted from mytestfile.txt",TextBuddy.executeCommand("clear"));
 		assertEquals(0,TextBuddy.getFileSize());
 	}
 	@Test
 	public void testAdd(){
-		String output=null;
 		TextBuddy.executeCommand("clear");
 		TextBuddy.executeCommand("add 123");
-		output=TextBuddy.executeCommand("display");
-		assertEquals("1. 123",output);
+		assertEquals("1. 123",TextBuddy.executeCommand("display"));
 		assertEquals(1,TextBuddy.getFileSize());
 	}
 
