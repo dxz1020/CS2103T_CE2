@@ -120,11 +120,18 @@ public class TextBuddy {
 			return deleteTask(userDataInput);
 		case "clear" :
 			return clearAllTask();
+		case "sort" :
+			return sortTask();
 		case "exit" :
 			exitProgram();
 		default :
 			throw new Error(); 
 		}
+	}
+
+	private static String sortTask() {
+		// TODO Auto-generated method stub
+		return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
 	}
 
 	private static String addToFile(String input) {

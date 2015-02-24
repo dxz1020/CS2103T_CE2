@@ -54,5 +54,12 @@ public class TextBuddyTest {
 		assertEquals(0,TextBuddy.getFileSize());
 		assertEquals("mytestfile.txt is empty",TextBuddy.executeCommand("delete 1"));
 	}
+	
+	@Test
+	public void testSort(){
+		//null test
+		TextBuddy.executeCommand("clear");
+		assertEquals("mytestfile.txt is empty",TextBuddy.executeCommand("sort"));
+	}
 
 }
