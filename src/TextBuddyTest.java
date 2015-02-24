@@ -104,8 +104,8 @@ public class TextBuddyTest {
 		TextBuddy.executeCommand("clear");
 		TextBuddy.executeCommand("add apple");
 		TextBuddy.executeCommand("add peach");
-		assertEquals("1. apple",TextBuddy.executeCommand("search apple"));
-		assertEquals("2. peach",TextBuddy.executeCommand("search peach"));
+		assertEquals("1. apple\n",TextBuddy.executeCommand("search apple"));
+		assertEquals("2. peach\n",TextBuddy.executeCommand("search peach"));
 	}
 
 }

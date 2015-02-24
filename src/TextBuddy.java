@@ -35,6 +35,7 @@ public class TextBuddy {
 	private static final String MESSAGE_DISPLAY = "%d. %s";
 	private static final String MESSAGE_COMMAND = "command: ";
 	private static final String MESSAGE_SORT = "tasks sorted";
+	private static final String MESSAGE_INVALID_SEARCH="no matching results";
 
 	//data structure to store text file
 	private static ArrayList<String> data;
@@ -135,10 +136,24 @@ public class TextBuddy {
 
 	private static String searchTask(String input) {
 		// TODO Auto-generated method stub
+		boolean isFound=false;
+		String output=new String();
 		if(data.isEmpty()){
 			return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
 		}
-		return data.size()+". "+input;
+		for(int i=0;i<data.size();i++){
+			String task=data.get(i);
+			if(task.contains(input)){
+				isFound=true; //flag keyword as found
+				int taskIndex=i+1; //index starts from 1
+				output+=taskIndex+". "+task+"\n";
+			}
+		}
+		if(isFound){
+			return output;
+		}else{
+			return MESSAGE_INVALID_SEARCH;
+		}
 	}
 
 	private static String sortTask() {
