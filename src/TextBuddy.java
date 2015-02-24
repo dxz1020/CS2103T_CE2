@@ -17,8 +17,9 @@ import java.util.Scanner;
  * 1) Adding a new task : add <task>
  * 2) Deleting a task : delete <task number>
  * 3) Displaying a task : display
- * 4) Sorting of tasks : sort
- * 5) Searching tasks : search <text>
+ * 4) Clearing all task : clear
+ * 5) Sorting of tasks : sort
+ * 6) Searching tasks : search <text>
  * 
  * @author Duan Xu Zhou A0108453J
  *

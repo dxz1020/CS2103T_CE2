@@ -45,9 +45,13 @@ public class TextBuddyTest {
 		TextBuddy.executeCommand("add 456");
 		TextBuddy.executeCommand("add 567");
 		assertEquals("deleted from mytestfile.txt: \"123\"",TextBuddy.executeCommand("delete 1"));
+		assertEquals(3,TextBuddy.getFileSize());
 		assertEquals("deleted from mytestfile.txt: \"234\"",TextBuddy.executeCommand("delete 1"));
+		assertEquals(2,TextBuddy.getFileSize());
 		assertEquals("deleted from mytestfile.txt: \"567\"",TextBuddy.executeCommand("delete 2"));
+		assertEquals(1,TextBuddy.getFileSize());
 		assertEquals("deleted from mytestfile.txt: \"456\"",TextBuddy.executeCommand("delete 1"));
+		assertEquals(0,TextBuddy.getFileSize());
 		assertEquals("mytestfile.txt is empty",TextBuddy.executeCommand("delete 1"));
 	}
 
