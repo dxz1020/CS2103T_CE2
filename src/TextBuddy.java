@@ -112,7 +112,7 @@ public class TextBuddy {
 		if(tokenizer.length>1){
 			userDataInput=tokenizer[1];
 		}
-		
+
 		switch (userCommand) {
 		case "add" :
 			return addToFile(userDataInput);
@@ -135,7 +135,10 @@ public class TextBuddy {
 
 	private static String searchTask(String input) {
 		// TODO Auto-generated method stub
-		return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
+		if(data.isEmpty()){
+			return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
+		}
+		return data.size()+". "+input;
 	}
 
 	private static String sortTask() {
