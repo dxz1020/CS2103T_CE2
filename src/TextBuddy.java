@@ -204,6 +204,6 @@ public class TextBuddy {
 		return String.format(message, args);
 	}
 	public static int getFileSize(){
-		return 0;
+		return data.size();
 	}
 }
