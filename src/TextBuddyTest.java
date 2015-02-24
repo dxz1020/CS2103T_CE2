@@ -100,6 +100,10 @@ public class TextBuddyTest {
 		//null test
 		TextBuddy.executeCommand("clear");
 		assertEquals("mytestfile.txt is empty",TextBuddy.executeCommand("search apple"));
+		
+		TextBuddy.executeCommand("clear");
+		TextBuddy.executeCommand("add apple");
+		assertEquals("1. apple",TextBuddy.executeCommand("search apple"));
 	}
 
 }
