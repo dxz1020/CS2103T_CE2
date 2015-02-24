@@ -67,7 +67,7 @@ public class TextBuddyTest {
 		TextBuddy.executeCommand("add 2");
 		TextBuddy.executeCommand("add 3");
 		assertEquals(3, TextBuddy.getFileSize());
-		assertEquals("files sorted", TextBuddy.executeCommand("sort"));
+		assertEquals("tasks sorted", TextBuddy.executeCommand("sort"));
 		assertEquals("1. 1\n2. 2\n3. 3", TextBuddy.executeCommand("display"));
 	}
 

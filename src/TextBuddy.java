@@ -33,6 +33,7 @@ public class TextBuddy {
 	private static final String MESSAGE_EMPTY_FILE = "%s is empty";
 	private static final String MESSAGE_DISPLAY = "%d. %s";
 	private static final String MESSAGE_COMMAND = "command: ";
+	private static final String MESSAGE_SORT = "tasks sorted";
 
 	//data structure to store text file
 	private static ArrayList<String> data;
@@ -131,7 +132,10 @@ public class TextBuddy {
 
 	private static String sortTask() {
 		// TODO Auto-generated method stub
-		return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
+		if(data.isEmpty()){
+			return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
+		}
+		return MESSAGE_SORT;
 	}
 
 	private static String addToFile(String input) {
