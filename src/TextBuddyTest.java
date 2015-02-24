@@ -80,13 +80,13 @@ public class TextBuddyTest {
 		assertEquals("tasks sorted", TextBuddy.executeCommand("sort"));
 		assertEquals("1. 1\n2. 2\n3. 3", TextBuddy.executeCommand("display"));
 		
-		/*TextBuddy.executeCommand("clear");
+		TextBuddy.executeCommand("clear");
 		TextBuddy.executeCommand("add C");
 		TextBuddy.executeCommand("add b");
 		TextBuddy.executeCommand("add A");
 		TextBuddy.executeCommand("sort");
 		assertEquals("1. A\n2. b\n3. C", TextBuddy.executeCommand("display"));
-		*/
+		
 		TextBuddy.executeCommand("clear");
 		TextBuddy.executeCommand("add Watermelon");
 		TextBuddy.executeCommand("add Apple");
