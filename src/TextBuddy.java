@@ -32,7 +32,7 @@ public class TextBuddy {
 	private static final String MESSAGE_EMPTY_FILE = "%s is empty";
 	private static final String MESSAGE_DISPLAY = "%d. %s";
 	private static final String MESSAGE_COMMAND = "command: ";
-	
+
 	//data structure to store text file
 	private static ArrayList<String> data;
 
@@ -48,8 +48,8 @@ public class TextBuddy {
 		showWelcomeMessage();
 		acceptUserCommandsUntilExit();
 	}
-	
-	//Requires filename defines by user to function, this method will check for missing arguments
+
+	//TextBuddy requires filename defined by user to function, this method will check for missing arguments
 	//return error if no filename is specified
 	private static void verifyArgument(String[] args) {
 		if (args.length == 0) {
@@ -58,28 +58,31 @@ public class TextBuddy {
 		}
 	}
 
-	private static void createNewFile(String filename) {
+	public static void createNewFile(String filename) {
 		createIOConstruct(filename);
 		readFromFile(file);
 	}
-	
+
 	private static void showWelcomeMessage() {
 		displayMessage(formatMessage(MESSAGE_WELCOME, file.getName()));
 	}
-	
+
 	private static void acceptUserCommandsUntilExit() {
+		String feedbackMessage=new String();
 		while (isNotExit) {
 			String userInput=scanForUserInput();
-			executeCommand(userInput);
+			feedbackMessage=executeCommand(userInput);
+			saveFile();
+			displayMessage(feedbackMessage);
 		}
 	}
-	
+
 	private static void createIOConstruct(String filename) {
 		data = new ArrayList<String>();
 		file = new File(filename);
 		inputScanner = new Scanner(System.in);
 	}
-	
+
 	private static void readFromFile(File file) {
 		try {
 			BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
@@ -98,72 +101,69 @@ public class TextBuddy {
 		return userInput;
 	}
 
-	public static void executeCommand(String input) {
+	public static String executeCommand(String input) {
 		String userDataInput = null; //for the case of <display> and <sort> commands, no user data input field is given
 		String[] tokenizer = input.split(" ",2);
 		String userCommand=tokenizer[0];
-		
+
 		if(tokenizer.length>1){
 			userDataInput=tokenizer[1];
 		}
 		
 		switch (userCommand) {
 		case "add" :
-			addToFile(userDataInput);
-			break;
+			return addToFile(userDataInput);
 		case "display" :
-			displayFileContent();
-			return; 
+			return displayFileContent();
 		case "delete" :
-			deleteTask(userDataInput);
-			break;
+			return deleteTask(userDataInput);
 		case "clear" :
-			clearAllTask();
-			break;
+			return clearAllTask();
 		case "exit" :
 			exitProgram();
-			break;
 		default :
 			throw new Error(); 
 		}
-
-		saveFile();
 	}
 
-	private static void addToFile(String input) {
+	private static String addToFile(String input) {
 		if (input == null) {
-			return;
+			return null;
 		}
 		data.add(input);
-		formatMessage(MESSAGE_ADD, file.getName(), input);
+		return formatMessage(MESSAGE_ADD, file.getName(), input);
 	}
 
-	private static void displayFileContent() {
+	private static String displayFileContent() {
 		if (data.isEmpty()) {
-			formatMessage(MESSAGE_EMPTY_FILE, file.getName());
+			return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
 		}
-		for (int i = 0; i < data.size(); i++) {
-			formatMessage(MESSAGE_DISPLAY, i + 1, data.get(i));
+		String output=new String();
+		for (int i = 0; i < data.size()-1; i++) {
+			output+=formatMessage(MESSAGE_DISPLAY, i + 1, data.get(i));
+			output+="\n";
 		}
+		output+=formatMessage(MESSAGE_DISPLAY,data.size(),data.get(data.size()-1)); //we do not want to add newline to last line of task
+		return output;
 	}
 
-	private static void deleteTask(String input) {
+	private static String deleteTask(String input) {
 		if (data.isEmpty()) {
-			formatMessage(MESSAGE_EMPTY_FILE, file.getName());
-			return;
+			return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
 		}
 		int index = getIndex(input);
-		deleteContentAtIndex(index);
+		return deleteContentAtIndex(index);
 	}
 
-	private static void clearAllTask() {
+	private static String clearAllTask() {
 		data.clear();
-		formatMessage(MESSAGE_CLEAR, file.getName());
+		return formatMessage(MESSAGE_CLEAR, file.getName());
 	}
 
 	private static void exitProgram() {
 		inputScanner.close();
 		isNotExit = false;
+		System.exit(0);
 	}
 
 	private static int getIndex(String input) {
@@ -174,17 +174,13 @@ public class TextBuddy {
 		return INDEX_OUT_OF_BOUND;
 	}
 
-	private static void deleteContentAtIndex(int index) {
+	private static String deleteContentAtIndex(int index) {
 		if (index == INDEX_OUT_OF_BOUND) {
-			return;
+			return null;
 		}
-		try {
-			String content = data.get(index);
-			data.remove(index);
-			formatMessage(MESSAGE_DELETE, file.getName(), content);
-		} catch (IndexOutOfBoundsException e) {
-		}
-
+		String content = data.get(index);
+		data.remove(index);
+		return formatMessage(MESSAGE_DELETE, file.getName(), content);
 	}
 
 	private static void saveFile() {
@@ -196,7 +192,7 @@ public class TextBuddy {
 				fileWriter.newLine();
 			}
 			fileWriter.close();
-		}catch (IOException e) {
+		} catch (IOException e) {
 		}
 	}
 
@@ -206,5 +202,8 @@ public class TextBuddy {
 
 	private static String formatMessage(String message, Object... args) {
 		return String.format(message, args);
+	}
+	public static int getFileSize(){
+		return 0;
 	}
 }
