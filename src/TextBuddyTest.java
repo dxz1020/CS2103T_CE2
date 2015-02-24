@@ -62,7 +62,13 @@ public class TextBuddyTest {
 		assertEquals("mytestfile.txt is empty",TextBuddy.executeCommand("sort"));
 		assertEquals("mytestfile.txt is empty",TextBuddy.executeCommand("display"));
 		assertEquals(0, TextBuddy.getFileSize());
-		
+		//insert in ascending order
+		TextBuddy.executeCommand("add 1");
+		TextBuddy.executeCommand("add 2");
+		TextBuddy.executeCommand("add 3");
+		assertEquals(3, TextBuddy.getFileSize());
+		assertEquals("files sorted", TextBuddy.executeCommand("sort"));
+		assertEquals("1. 1\n2. 2\n3. 3", TextBuddy.executeCommand("display"));
 	}
 
 }
