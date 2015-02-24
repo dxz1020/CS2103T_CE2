@@ -28,12 +28,27 @@ public class TextBuddyTest {
 		TextBuddy.executeCommand("add peter pan");
 		assertEquals("1. fairytale\n2. peter pan",TextBuddy.executeCommand("display"));
 	}
+	
 	@Test
 	public void testAdd(){
 		TextBuddy.executeCommand("clear");
 		assertEquals("added to mytestfile.txt: \"123\"",TextBuddy.executeCommand("add 123"));
 		assertEquals("1. 123",TextBuddy.executeCommand("display"));
 		assertEquals(1,TextBuddy.getFileSize());
+	}
+	
+	@Test
+	public void testDelete(){
+		TextBuddy.executeCommand("clear");
+		TextBuddy.executeCommand("add 123");
+		TextBuddy.executeCommand("add 234");
+		TextBuddy.executeCommand("add 456");
+		TextBuddy.executeCommand("add 567");
+		assertEquals("deleted from mytestfile.txt: \"123\"",TextBuddy.executeCommand("delete 1"));
+		assertEquals("deleted from mytestfile.txt: \"234\"",TextBuddy.executeCommand("delete 1"));
+		assertEquals("deleted from mytestfile.txt: \"567\"",TextBuddy.executeCommand("delete 2"));
+		assertEquals("deleted from mytestfile.txt: \"456\"",TextBuddy.executeCommand("delete 1"));
+		assertEquals("mytestfile.txt is empty",TextBuddy.executeCommand("delete 1"));
 	}
 
 }
