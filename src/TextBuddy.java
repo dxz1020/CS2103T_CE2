@@ -126,9 +126,16 @@ public class TextBuddy {
 			return sortTask();
 		case "exit" :
 			exitProgram();
+		case "search" :
+			return searchTask(userDataInput);
 		default :
 			throw new Error(); 
 		}
+	}
+
+	private static String searchTask(String input) {
+		// TODO Auto-generated method stub
+		return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
 	}
 
 	private static String sortTask() {
