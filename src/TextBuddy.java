@@ -25,6 +25,7 @@ import java.util.Collections;
  * @author Duan Xu Zhou A0108453J
  *
  */
+
 public class TextBuddy {
 	private static final String MESSAGE_MISSING_ARGUMENTS = "ERROR: %s.";
 	private static final String MESSAGE_WELCOME = "Welcome to TextBuddy. %s is ready for use";
@@ -36,14 +37,17 @@ public class TextBuddy {
 	private static final String MESSAGE_COMMAND = "command: ";
 	private static final String MESSAGE_SORT = "tasks sorted";
 	private static final String MESSAGE_INVALID_SEARCH="no matching results";
+	private static final String MESSAGE_NO_INPUT = "no input";
+	private static final String MESSAGE_INVALID_INDEX = "invalid index";
+	private static final int INDEX_OUT_OF_BOUND = -1;
 
 	//data structure to store text file
 	private static ArrayList<String> data;
 
 	private static File file;
 	private static Scanner inputScanner;
-	private static final int INDEX_OUT_OF_BOUND = -1;
 
+	//exit status flag, default is true to let program run
 	private static boolean isNotExit = true;
 
 	public static void main(String[] args) {
@@ -125,49 +129,18 @@ public class TextBuddy {
 			return clearAllTask();
 		case "sort" :
 			return sortTask();
-		case "exit" :
-			exitProgram();
 		case "search" :
 			return searchTask(userDataInput);
+		case "exit" :
+			exitProgram();
 		default :
 			throw new Error(); 
 		}
 	}
 
-	private static String searchTask(String input) {
-		// TODO Auto-generated method stub
-		boolean isFound=false;
-		String output=new String();
-		if(data.isEmpty()){
-			return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
-		}
-		for(int i=0;i<data.size();i++){
-			String task=data.get(i);
-			if(task.contains(input)){
-				isFound=true; //flag keyword as found
-				int taskIndex=i+1; //index starts from 1
-				output+=taskIndex+". "+task+"\n";
-			}
-		}
-		if(isFound){
-			return output;
-		}else{
-			return MESSAGE_INVALID_SEARCH;
-		}
-	}
-
-	private static String sortTask() {
-		// TODO Auto-generated method stub
-		if(data.isEmpty()){
-			return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
-		}
-		Collections.sort(data,String.CASE_INSENSITIVE_ORDER);
-		return MESSAGE_SORT;
-	}
-
 	private static String addToFile(String input) {
 		if (input == null) {
-			return null;
+			return MESSAGE_NO_INPUT;
 		}
 		data.add(input);
 		return formatMessage(MESSAGE_ADD, file.getName(), input);
@@ -199,6 +172,57 @@ public class TextBuddy {
 		return formatMessage(MESSAGE_CLEAR, file.getName());
 	}
 
+	private static String sortTask() {
+		if(data.isEmpty()){
+			return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
+		}
+		Collections.sort(data,String.CASE_INSENSITIVE_ORDER);
+		return MESSAGE_SORT;
+	}
+
+	private static String searchTask(String input) {
+		boolean isFound=false;
+		String output=new String();
+		if(data.isEmpty()){
+			return formatMessage(MESSAGE_EMPTY_FILE, file.getName());
+		}
+		for(int i=0;i<data.size();i++){
+			String task=data.get(i);
+			if(task.contains(input)){
+				isFound=true; //flag keyword as found
+				int taskIndex=i+1; //index starts from 1
+				output+=taskIndex+". "+task+"\n";
+			}
+		}
+		if(isFound){
+			return output;
+		}else{
+			return MESSAGE_INVALID_SEARCH;
+		}
+	}
+
+	private static String deleteContentAtIndex(int index) {
+		if (index == INDEX_OUT_OF_BOUND) {
+			return MESSAGE_INVALID_INDEX;
+		}
+		String content = data.get(index);
+		data.remove(index);
+		return formatMessage(MESSAGE_DELETE, file.getName(), content);
+	}
+
+	private static void saveFile() {
+		try {
+			BufferedWriter fileWriter = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(file)));
+			for (String task : data) {
+				fileWriter.write(task);
+				fileWriter.newLine();
+			}
+			fileWriter.close();
+		} catch (IOException e) {
+		}
+	}
+
 	private static void exitProgram() {
 		inputScanner.close();
 		isNotExit = false;
@@ -211,28 +235,6 @@ public class TextBuddy {
 		} catch (NumberFormatException e) {
 		}
 		return INDEX_OUT_OF_BOUND;
-	}
-
-	private static String deleteContentAtIndex(int index) {
-		if (index == INDEX_OUT_OF_BOUND) {
-			return null;
-		}
-		String content = data.get(index);
-		data.remove(index);
-		return formatMessage(MESSAGE_DELETE, file.getName(), content);
-	}
-
-	private static void saveFile() {
-		try {
-			BufferedWriter fileWriter = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(file)));
-			for (String element : data) {
-				fileWriter.write(element);
-				fileWriter.newLine();
-			}
-			fileWriter.close();
-		} catch (IOException e) {
-		}
 	}
 
 	private static void displayMessage(String message) {
