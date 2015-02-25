@@ -4,6 +4,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 
+/**
+ * JUnit testcase program for testing TextBuddy.java
+ * Support tests for the funtions:
+ * 1)clear
+ * 2)display
+ * 3)add
+ * 4)delete
+ * 5)sort
+ * 6)search
+ * @author Duan Xu Zhou A0108453J
+ *
+ */
 public class TextBuddyTest {
 
 	@BeforeClass
@@ -115,7 +127,7 @@ public class TextBuddyTest {
 		assertEquals("1. apple\n",TextBuddy.executeCommand("search apple"));
 		assertEquals("2. peach\n",TextBuddy.executeCommand("search peach"));
 		
-		//substring search test
+		//complex substring search test
 		TextBuddy.executeCommand("clear");
 		TextBuddy.executeCommand("add thomas");
 		TextBuddy.executeCommand("add computer");

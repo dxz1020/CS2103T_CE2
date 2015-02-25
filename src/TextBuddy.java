@@ -14,13 +14,13 @@ import java.util.Collections;
  * TextBuddy CE2
  * TextBuddy version 2: added sort and search functions
  * 
- * TextBuddy is a text-based CMD style TODO app that supports:
+ * TextBuddy is a text-based CMD style TODO application that supports:
  * 1) Adding a new task : add <task>
  * 2) Deleting a task : delete <task number>
  * 3) Displaying a task : display
  * 4) Clearing all task : clear
  * 5) Sorting of tasks : sort
- * 6) Searching tasks : search <text>
+ * 6) Searching tasks : search <keyword>
  * 
  * @author Duan Xu Zhou A0108453J
  *
@@ -40,6 +40,9 @@ public class TextBuddy {
 	private static final String MESSAGE_NO_INPUT = "no input";
 	private static final String MESSAGE_INVALID_INDEX = "invalid index";
 	private static final int INDEX_OUT_OF_BOUND = -1;
+	
+	//indexing for task list starts from 1
+	private static final int INDEX_CORRECTION = 1;
 
 	//data structure to store text file
 	private static ArrayList<String> data;
@@ -56,9 +59,10 @@ public class TextBuddy {
 		showWelcomeMessage();
 		acceptUserCommandsUntilExit();
 	}
-
-	//TextBuddy requires filename defined by user to function, this method will check for missing arguments
-	//return error if no filename is specified
+	
+	/**This method will check for filename parameter, return error and end program if parameter is not detected
+	 * @param String[] args from command line
+	 */
 	private static void verifyArgument(String[] args) {
 		if (args.length == 0) {
 			displayMessage(formatMessage(MESSAGE_MISSING_ARGUMENTS, "MISSING ARGUMENTS"));
@@ -66,6 +70,9 @@ public class TextBuddy {
 		}
 	}
 
+	/**This method will setup textbuddy to create files for storing of data and load existing files
+	 * @param filename given by String[] args
+	 */
 	public static void createNewFile(String filename) {
 		createIOConstruct(filename);
 		readFromFile(file);
@@ -75,6 +82,10 @@ public class TextBuddy {
 		displayMessage(formatMessage(MESSAGE_WELCOME, file.getName()));
 	}
 
+	/**This method will start a loop to take in user input
+	 * by prompting for commands and execute the commands accordingly
+	 * until the 'exit' command is detected which would terminate the loop and end the program 
+	 */
 	private static void acceptUserCommandsUntilExit() {
 		String feedbackMessage=new String();
 		while (isNotExit) {
@@ -109,6 +120,11 @@ public class TextBuddy {
 		return userInput;
 	}
 
+	/**
+	 * This method will interpret the user commands and parse the commands to be executed to the relevant method functions
+	 * @param String input entered by the user
+	 * @return String feedback message
+	 */
 	public static String executeCommand(String input) {
 		String userDataInput = null; //for the case of <display> and <sort> commands, no user data input field is given
 		String[] tokenizer = input.split(" ",2);
@@ -152,7 +168,7 @@ public class TextBuddy {
 		}
 		String output=new String();
 		for (int i = 0; i < data.size()-1; i++) {
-			output+=formatMessage(MESSAGE_DISPLAY, i + 1, data.get(i));
+			output+=formatMessage(MESSAGE_DISPLAY, i + INDEX_CORRECTION, data.get(i));
 			output+="\n";
 		}
 		output+=formatMessage(MESSAGE_DISPLAY,data.size(),data.get(data.size()-1)); //we do not want to add newline to last line of task
@@ -190,7 +206,7 @@ public class TextBuddy {
 			String task=data.get(i);
 			if(task.contains(input)){
 				isFound=true; //flag keyword as found
-				int taskIndex=i+1; //index starts from 1
+				int taskIndex=i+INDEX_CORRECTION;
 				output+=taskIndex+". "+task+"\n";
 			}
 		}
@@ -231,7 +247,7 @@ public class TextBuddy {
 
 	private static int getIndex(String input) {
 		try {
-			return Integer.parseInt(input) - 1; //index starts from 1
+			return Integer.parseInt(input) - INDEX_CORRECTION;
 		} catch (NumberFormatException e) {
 		}
 		return INDEX_OUT_OF_BOUND;
